@@ -1,3 +1,9 @@
+## Some JS concepts learned here
+- JS classes are hoisted, but they are not initialised until that particular line is read
+- Objects in JS are so called reference datatypes i.e. refers to the space where the main class is stored.
+
+
+
 # <canvas>
 - used to draw graphics, animations, and render game scenes directly on a webpage using JS.
 - essentially a container for graphics that you can draw using scripting

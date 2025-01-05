@@ -20,5 +20,8 @@ window.addEventListener("load", function () {
     }
   } // controls our whole logic of the game
 
+  const game = new Game(canvas)
+  console.log(game);
+
   function animate() {} // animations of the game required
 });
