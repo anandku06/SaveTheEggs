@@ -21,7 +21,7 @@ window.addEventListener("load", function () {
     draw(context){
         context.beginPath() // to start a new shape and close any previous shape if any
         context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2) // used to draw a circle; expects 5 args; x,y coords for center point, radius, start angle in radians, end angle
-        // context.fill() // default color is black ; used to fill color in the shape made
+        context.fill() // default color is black ; used to fill color in the shape made
         context.stroke() // used to outline the shape made ; default is black, 1px stroke
     }
   } // movements and other things of the player
