@@ -16,6 +16,11 @@ window.addEventListener("load", function () {
       this.collisionX = this.game.width * 0.5; // to keep them in the middle of the canvas
       this.collisionY = this.game.height * 0.5;
       this.collisionRadius = 30;
+      this.speedX = 0; // speed of the player along x-axis
+      this.speedY = 0; // speed along y-axis
+      this.dx = 0; // distance of the player from the mouse along  x-axis
+      this.dy = 0; // distance along y-axis
+      this.speedModifier = 5
     }
 
     draw(context) {
@@ -33,7 +38,31 @@ window.addEventListener("load", function () {
       context.restore();
       // wrapped the made changes between save() and restore() method to avoid sharing with other shapes
       context.stroke(); // used to outline the shape made ; default is black, 1px stroke
+
+      context.beginPath();
+      context.moveTo(this.collisionX, this.collisionY); // define the starting x and y coords of the line
+      context.lineTo(this.game.mouse.x, this.game.mouse.y); // define the ending x and y coords of the line
+      context.stroke(); // to make the line visible
     }
+
+    update() {
+      this.dx = this.game.mouse.x - this.collisionX; // one method for the player movement ; problem here is the speed is not constant
+      this.dy = this.game.mouse.y - this.collisionY;
+
+      const distance = Math.hypot(this.dy, this.dx) // other method for the player movement ; speed here is constant as we are targeting the longest distance only
+
+      if(distance > this.speedModifier){
+        this.speedX = this.dx / distance || 0; // makes the object move towards the mouse smoothly along x-axis
+        this.speedY = this.dy / distance || 0; // makes the object move towards the mouse smoothly along y-axis
+      }
+      else{
+        this.speedX = 0
+        this.speedY = 0
+      }
+      this.collisionX += this.speedX * this.speedModifier; 
+      // adding the difference so that the object actually move
+      this.collisionY += this.speedY * this.speedModifier; // multiplied by the speedModifier makes the player vibrate as now the player is pushed too far in both directions
+    } // make the object (player) follow the mouse (line)
   } // movements and other things of the player
 
   class Game {
@@ -63,20 +92,28 @@ window.addEventListener("load", function () {
         this.mouse.pressed = false;
       });
 
-      this.canvas.addEventListener('mousemove', e => {
-        this.mouse.x = e.offsetX
-        this.mouse.y = e.offsetY
-      })
+      this.canvas.addEventListener("mousemove", (e) => {
+        if (this.mouse.pressed) {
+          this.mouse.x = e.offsetX;
+          this.mouse.y = e.offsetY;
+        }
+      });
     }
     render(context) {
       // draw or update all objects
       this.player.draw(context);
+      this.player.update();
     }
   } // controls our whole logic of the game
 
   const game = new Game(canvas);
-  game.render(ctx);
   // console.log(game);
 
-  function animate() {} // animations of the game required
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // built-in method used to clear the shapes ; takes the starting coords and ending coords
+    game.render(ctx); // because this is to be called again and again
+    requestAnimationFrame(animate);
+  } // animations of the game required
+
+  animate();
 });

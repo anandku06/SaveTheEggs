@@ -32,3 +32,5 @@
   - globalAlpha property to set the opacity of the shapes drawn
 
 - to limit certain canvas settings only to specific draw calls, we can wrap that drawing code between save() and restore() built-in canvas methods.
+
+### requestAnimationFrame() method -> which sits on the window object of the browser but can be called directly. Pass the animation you want to create an endless animation
