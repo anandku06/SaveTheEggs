@@ -43,13 +43,29 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       this.player = new Player(this);
       this.mouse = {
-        x : this.width * 0.5,
-        y : this.height * 0.5,
-        pressed : false
-      }
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
 
-      canvas.addEventListener('mousedown', function(e){
-        console.log(e.offsetX, e.offsetY) // coordinate of the click on the target node
+      this.canvas.addEventListener("mousedown", (e) => {
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = true;
+        // coordinate of the click on the target node
+        // console.log(this.mouse.x, this.mouse.y); // gives error because the 'this' keyword forgets its reference i.e. it forgets its lexical scoping
+        // to overcome this using arrow functions
+      });
+
+      this.canvas.addEventListener("mouseup", (e) => {
+        this.mouse.x = e.offsetX;
+        this.mouse.y = e.offsetY;
+        this.mouse.pressed = false;
+      });
+
+      this.canvas.addEventListener('mousemove', e => {
+        this.mouse.x = e.offsetX
+        this.mouse.y = e.offsetY
       })
     }
     render(context) {

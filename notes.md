@@ -2,6 +2,8 @@
 
 - JS classes are hoisted, but they are not initialised until that particular line is read
 - Objects in JS are so called reference datatypes i.e. refers to the space where the main class is stored.
+- sometimes the reference of 'this' keyword in regular functions may lost due to nested callbacks, to overcome this use Arrow functions
+- ES6 arrow functions is that they automatically inherit the reference to 'this' keyword from the parent scope.
 
 # <canvas>
 
