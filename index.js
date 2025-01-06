@@ -31,6 +31,7 @@ window.addEventListener("load", function () {
       context.globalAlpha = 0.5; // sets the opacity of the shape to semi-transparent
       context.fill(); // default color is black ; used to fill color in the shape made
       context.restore();
+      // wrapped the made changes between save() and restore() method to avoid sharing with other shapes
       context.stroke(); // used to outline the shape made ; default is black, 1px stroke
     }
   } // movements and other things of the player
@@ -41,6 +42,15 @@ window.addEventListener("load", function () {
       this.width = this.canvas.width;
       this.height = this.canvas.height;
       this.player = new Player(this);
+      this.mouse = {
+        x : this.width * 0.5,
+        y : this.height * 0.5,
+        pressed : false
+      }
+
+      canvas.addEventListener('mousedown', function(e){
+        console.log(e.offsetX, e.offsetY) // coordinate of the click on the target node
+      })
     }
     render(context) {
       // draw or update all objects
@@ -50,7 +60,7 @@ window.addEventListener("load", function () {
 
   const game = new Game(canvas);
   game.render(ctx);
-  console.log(game);
+  // console.log(game);
 
   function animate() {} // animations of the game required
 });
