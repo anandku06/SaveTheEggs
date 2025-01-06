@@ -54,7 +54,7 @@ window.addEventListener("load", function () {
       if(distance > this.speedModifier){
         this.speedX = this.dx / distance || 0; // makes the object move towards the mouse smoothly along x-axis
         this.speedY = this.dy / distance || 0; // makes the object move towards the mouse smoothly along y-axis
-      }
+      } // to stop the vibration of the player
       else{
         this.speedX = 0
         this.speedY = 0
