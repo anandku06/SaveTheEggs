@@ -5,12 +5,12 @@
 - sometimes the reference of 'this' keyword in regular functions may lost due to nested callbacks, to overcome this use Arrow functions
 - ES6 arrow functions is that they automatically inherit the reference to 'this' keyword from the parent scope.
 
-# <canvas> tag
+# canvas HTMLElement
 
 - used to draw graphics, animations, and render game scenes directly on a webpage using JS.
 - essentially a container for graphics that you can draw using scripting
 
-  ## How to use <canvas>
+  ## How to use it
 
   - Get the context via JS
     ```Javascript
