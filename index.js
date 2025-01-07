@@ -70,7 +70,7 @@ window.addEventListener("load", function () {
       this.game = game // we got the access of all the game properties
       this.collisionX = Math.random() * this.game.width
       this.collisionY = Math.random() * this.game.height
-      this.collisionRadius = 60
+      this.collisionRadius = 25
     }
     draw(context){
       context.beginPath()
@@ -89,6 +89,8 @@ window.addEventListener("load", function () {
       this.width = this.canvas.width;
       this.height = this.canvas.height;
       this.player = new Player(this);
+      this.obstacles = []
+      this.numberOfObstacles = 5
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -121,11 +123,19 @@ window.addEventListener("load", function () {
       // draw or update all objects
       this.player.draw(context);
       this.player.update();
+      this.obstacles.forEach(obstacle => obstacle.draw(context))
     }
+
+    init(){
+      for(let i = 0; i < this.numberOfObstacles; i++){
+        this.obstacles.push(new Obstacle(this))
+      }
+    } // it will create obstacles and push them into the obstacle array
   } // controls our whole logic of the game
 
   const game = new Game(canvas);
-  // console.log(game);
+  game.init()
+  console.log(game);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // built-in method used to clear the shapes ; takes the starting coords and ending coords
