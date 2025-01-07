@@ -20,7 +20,7 @@ window.addEventListener("load", function () {
       this.speedY = 0; // speed along y-axis
       this.dx = 0; // distance of the player from the mouse along  x-axis
       this.dy = 0; // distance along y-axis
-      this.speedModifier = 5
+      this.speedModifier = 5;
     }
 
     draw(context) {
@@ -49,21 +49,39 @@ window.addEventListener("load", function () {
       this.dx = this.game.mouse.x - this.collisionX; // one method for the player movement ; problem here is the speed is not constant
       this.dy = this.game.mouse.y - this.collisionY;
 
-      const distance = Math.hypot(this.dy, this.dx) // other method for the player movement ; speed here is constant as we are targeting the longest distance only
+      const distance = Math.hypot(this.dy, this.dx); // other method for the player movement ; speed here is constant as we are targeting the longest distance only
 
-      if(distance > this.speedModifier){
+      if (distance > this.speedModifier) {
         this.speedX = this.dx / distance || 0; // makes the object move towards the mouse smoothly along x-axis
         this.speedY = this.dy / distance || 0; // makes the object move towards the mouse smoothly along y-axis
       } // to stop the vibration of the player
-      else{
-        this.speedX = 0
-        this.speedY = 0
+      else {
+        this.speedX = 0;
+        this.speedY = 0;
       }
-      this.collisionX += this.speedX * this.speedModifier; 
+      this.collisionX += this.speedX * this.speedModifier;
       // adding the difference so that the object actually move
       this.collisionY += this.speedY * this.speedModifier; // multiplied by the speedModifier makes the player vibrate as now the player is pushed too far in both directions
     } // make the object (player) follow the mouse (line)
   } // movements and other things of the player
+
+  class Obstacle {
+    constructor(game){
+      this.game = game // we got the access of all the game properties
+      this.collisionX = Math.random() * this.game.width
+      this.collisionY = Math.random() * this.game.height
+      this.collisionRadius = 60
+    }
+    draw(context){
+      context.beginPath()
+      context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2)
+      context.save()
+      context.globalAlpha = 0.5
+      context.fill()
+      context.restore()
+      context.stroke()
+    }
+  }
 
   class Game {
     constructor(canvas) {
