@@ -27,9 +27,10 @@
         - '2d' : for 2D graphics
         - 'webgl' : for 3D graphics
         - 'webgl2' : for WebGL2.0
-    - .fill() method -> used to fill color in the drawn shape ; default value is black ; can be changed by setting the fillStyle property value to the favoured color
-    - .stroke method -> used to make a outline of the drawn shape ; default is 1px black outline ; can be changed by setting the .lineWidth property and .strokeStyle property values to the user accordance
-  - globalAlpha property to set the opacity of the shapes drawn
+    - #### .fill() method -> used to fill color in the drawn shape ; default value is black ; can be changed by setting the fillStyle property value to the favoured color
+    - #### .stroke method -> used to make a outline of the drawn shape ; default is 1px black outline ; can be changed by setting the .lineWidth property and .strokeStyle property values to the user accordance
+    - #### .drawImage() method -> used to draw image on the canvas, accepts args like, the image you want to draw, the x and y coords ; if the image is specific in the given image URL, then accepts more args for the specific image
+  - #### globalAlpha property to set the opacity of the shapes drawn
 
 - to limit certain canvas settings only to specific draw calls, we can wrap that drawing code between save() and restore() built-in canvas methods.
 

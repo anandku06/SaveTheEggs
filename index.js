@@ -70,9 +70,18 @@ window.addEventListener("load", function () {
       this.game = game // we got the access of all the game properties
       this.collisionX = Math.random() * this.game.width
       this.collisionY = Math.random() * this.game.height
-      this.collisionRadius = 45
+      this.collisionRadius = 60
+      this.image = document.getElementById('obstacles')
+      this.spriteWidth = 250
+      this.spriteHeight = 250
+      this.width = this.spriteWidth
+      this.height = this.spriteHeight
+      this.spriteX = this.collisionX - this.width * 0.5
+      this.spriteY = this.collisionY - this.height * 0.5 - 70
     }
+
     draw(context){
+      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height) // used to draw image on the canvas
       context.beginPath()
       context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2)
       context.save()
@@ -136,13 +145,14 @@ window.addEventListener("load", function () {
           const dx = testObstacle.collisionX - obstacle.collisionX // difference between the two obstacles horizontally
           const dy = testObstacle.collisionY - obstacle.collisionY // difference between the two obstacles vertically
           const distance = Math.hypot(dx, dy)
-          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius
+          const distanceBuffer = 150// minimum space for better movement of player between obstacles 
+          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius + distanceBuffer
 
           if(distance < sumOfRadii){
             overlapped = true
           }
         })
-        if(!overlapped){
+        if(!overlapped && testObstacle.spriteX > 0 && testObstacle.spriteX < this.width - testObstacle.width && testObstacle.collisionY > 0){
           this.obstacles.push(testObstacle)
         }
         attempts++
