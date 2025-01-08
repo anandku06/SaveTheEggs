@@ -127,8 +127,9 @@ window.addEventListener("load", function () {
     }
 
     init(){
-      for(let i = 0; i < this.numberOfObstacles; i++){
-        this.obstacles.push(new Obstacle(this))
+      let attempts = 0
+      while(this.obstacles.length < this.numberOfObstacles && attempts < 500){
+        
       }
     } // it will create obstacles and push them into the obstacle array
   } // controls our whole logic of the game
