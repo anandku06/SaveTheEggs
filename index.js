@@ -90,7 +90,7 @@ window.addEventListener("load", function () {
       this.height = this.canvas.height;
       this.player = new Player(this);
       this.obstacles = []
-      this.numberOfObstacles = 5
+      this.numberOfObstacles = 10
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
