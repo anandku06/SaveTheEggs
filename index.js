@@ -70,7 +70,7 @@ window.addEventListener("load", function () {
       this.game = game // we got the access of all the game properties
       this.collisionX = Math.random() * this.game.width
       this.collisionY = Math.random() * this.game.height
-      this.collisionRadius = 25
+      this.collisionRadius = 45
     }
     draw(context){
       context.beginPath()
@@ -135,13 +135,16 @@ window.addEventListener("load", function () {
           // using circle pack algo
           const dx = testObstacle.collisionX - obstacle.collisionX // difference between the two obstacles horizontally
           const dy = testObstacle.collisionY - obstacle.collisionY // difference between the two obstacles vertically
-          const distance = Math.hypot(dy, dx)
+          const distance = Math.hypot(dx, dy)
           const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius
 
           if(distance < sumOfRadii){
             overlapped = true
           }
         })
+        if(!overlapped){
+          this.obstacles.push(testObstacle)
+        }
         attempts++
       }
     } // it will create obstacles and push them into the obstacle array
