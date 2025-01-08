@@ -36,3 +36,5 @@
 ### requestAnimationFrame() method -> which sits on the window object of the browser but can be called directly. Pass the animation you want to create an endless animation
 
 ### Using Circle Packing Algorithm -> maximum number of circles that can fit inside an area without two of them overlapping : to avoid the overlapping of the obstacles
+  - first calculate the distance between two circles' center point
+  - then compare the distance with the sum of the two circle's radii ; if the distance is less than the sum, then they overlap, else not overlapping

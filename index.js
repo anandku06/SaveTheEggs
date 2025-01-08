@@ -129,7 +129,20 @@ window.addEventListener("load", function () {
     init(){
       let attempts = 0
       while(this.obstacles.length < this.numberOfObstacles && attempts < 500){
-        
+        let testObstacle = new Obstacle(this)
+        let overlapped = false
+        this.obstacles.forEach(obstacle => {
+          // using circle pack algo
+          const dx = testObstacle.collisionX - obstacle.collisionX // difference between the two obstacles horizontally
+          const dy = testObstacle.collisionY - obstacle.collisionY // difference between the two obstacles vertically
+          const distance = Math.hypot(dy, dx)
+          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius
+
+          if(distance < sumOfRadii){
+            overlapped = true
+          }
+        })
+        attempts++
       }
     } // it will create obstacles and push them into the obstacle array
   } // controls our whole logic of the game
