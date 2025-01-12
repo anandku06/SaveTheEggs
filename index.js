@@ -79,10 +79,11 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX - this.width * 0.5
       this.spriteY = this.collisionY - this.height * 0.5 - 70
       this.frameX = Math.floor(Math.random() * 4)
+      this.frameY = Math.floor(Math.random() * 3)
     }
 
     draw(context){
-      context.drawImage(this.image, this.frameX * this.spriteWidth, 0 * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height) // used to draw image on the canvas
+      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height) // used to draw image on the canvas
       context.beginPath()
       context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2)
       context.save()
