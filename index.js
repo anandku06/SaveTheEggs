@@ -78,10 +78,11 @@ window.addEventListener("load", function () {
       this.height = this.spriteHeight
       this.spriteX = this.collisionX - this.width * 0.5
       this.spriteY = this.collisionY - this.height * 0.5 - 70
+      this.frameX = Math.floor(Math.random() * 4)
     }
 
     draw(context){
-      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height) // used to draw image on the canvas
+      context.drawImage(this.image, this.frameX * this.spriteWidth, 0 * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height) // used to draw image on the canvas
       context.beginPath()
       context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2)
       context.save()
@@ -100,6 +101,7 @@ window.addEventListener("load", function () {
       this.player = new Player(this);
       this.obstacles = []
       this.numberOfObstacles = 10
+      this.topMargin = 260
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -152,7 +154,8 @@ window.addEventListener("load", function () {
             overlapped = true
           }
         })
-        if(!overlapped && testObstacle.spriteX > 0 && testObstacle.spriteX < this.width - testObstacle.width && testObstacle.collisionY > 0){
+        const margin = testObstacle.collisionRadius * 2
+        if(!overlapped && testObstacle.spriteX > 0 && testObstacle.spriteX < this.width - testObstacle.width && testObstacle.collisionY > this.topMargin + margin && testObstacle.collisionY < this.height - margin){
           this.obstacles.push(testObstacle)
         }
         attempts++
