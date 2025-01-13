@@ -25,11 +25,13 @@ window.addEventListener("load", function () {
       this.spriteHeight = 255
       this.width = this.spriteWidth
       this.height = this.spriteHeight
+      this.spriteX
+      this.spriteY
       this.image = document.getElementById('bull')
     }
 
     draw(context) {
-      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.collisionX, this.collisionY, this.width, this.height)
+      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height)
       context.beginPath(); // to start a new shape and close any previous shape if any
       context.arc(
         this.collisionX,
@@ -68,6 +70,9 @@ window.addEventListener("load", function () {
       this.collisionX += this.speedX * this.speedModifier;
       // adding the difference so that the object actually move
       this.collisionY += this.speedY * this.speedModifier; // multiplied by the speedModifier makes the player vibrate as now the player is pushed too far in both directions
+      this.spriteX = this.collisionX - this.width * 0.5
+      this.spriteY = this.collisionY - this.height * 0.5 - 100
+
 
       // collision with obstacles
       this.game.obstacles.forEach(obstacle => {
