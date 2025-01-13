@@ -21,9 +21,15 @@ window.addEventListener("load", function () {
       this.dx = 0; // distance of the player from the mouse along  x-axis
       this.dy = 0; // distance along y-axis
       this.speedModifier = 5;
+      this.spriteWidth = 255
+      this.spriteHeight = 255
+      this.width = this.spriteWidth
+      this.height = this.spriteHeight
+      this.image = document.getElementById('bull')
     }
 
     draw(context) {
+      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.collisionX, this.collisionY, this.width, this.height)
       context.beginPath(); // to start a new shape and close any previous shape if any
       context.arc(
         this.collisionX,
@@ -75,6 +81,7 @@ window.addEventListener("load", function () {
           this.collisionY = obstacle.collisionY + (sumOfRadii + 1) * unit_y
         }
       })
+      // when collision is detected with the obstacle then the player can't pass through it
       
     } // make the object (player) follow the mouse (line)
   } // movements and other things of the player
