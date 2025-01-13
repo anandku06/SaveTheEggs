@@ -62,6 +62,14 @@ window.addEventListener("load", function () {
       this.collisionX += this.speedX * this.speedModifier;
       // adding the difference so that the object actually move
       this.collisionY += this.speedY * this.speedModifier; // multiplied by the speedModifier makes the player vibrate as now the player is pushed too far in both directions
+
+      // collsion with obstacles
+      this.game.obstacles.forEach(obstacle => {
+        if(this.game.checkCollsion(this, obstacle)){
+          console.log('collision')
+        }
+      })
+      
     } // make the object (player) follow the mouse (line)
   } // movements and other things of the player
 
@@ -137,7 +145,14 @@ window.addEventListener("load", function () {
       this.player.update();
       this.obstacles.forEach(obstacle => obstacle.draw(context))
     }
+    checkCollsion(a, b){
+      const dx = a.collisionX - b.collisionX
+      const dy = a.collisionY - b.collisionY
+      const distance = Math.hypot(dy, dx)
+      const sumOfRadii = a.collisionRadius + b.collisionRadius
 
+      return (distance < sumOfRadii)
+    }
     init(){
       let attempts = 0
       while(this.obstacles.length < this.numberOfObstacles && attempts < 500){
