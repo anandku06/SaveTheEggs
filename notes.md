@@ -36,6 +36,8 @@
 
 - on canvas Circle coords are from the center point and rectangle and image coords are from its top left corner ; image and rectangle goes towards right bottom depending on its width and height from there
 
+- Math.atan2() -> method that returns an angle in radians between the positive x-axis and a line, projected from 0, 0 towards a specific point ; using this method to ensure the direction of my player is same as the direction of the mouse clicked
+
 ### requestAnimationFrame() method -> which sits on the window object of the browser but can be called directly. Pass the animation you want to create an endless animation
 
 ### Using Circle Packing Algorithm -> maximum number of circles that can fit inside an area without two of them overlapping : to avoid the overlapping of the obstacles
