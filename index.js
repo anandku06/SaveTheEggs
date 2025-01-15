@@ -188,7 +188,7 @@ window.addEventListener("load", function () {
       this.topMargin = 260;
       this.debug = true;
       this.player = new Player(this);
-      this.fps = 20;
+      this.fps = 70;
       this.timer = 0; // starts from 0 to a threshold value after which the next animation frame is called; reset back to zero
       this.interval = 1000 / this.fps;
       this.obstacles = [];
