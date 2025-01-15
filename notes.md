@@ -38,7 +38,9 @@
 
 - Math.atan2() -> method that returns an angle in radians between the positive x-axis and a line, projected from 0, 0 towards a specific point ; using this method to ensure the direction of my player is same as the direction of the mouse clicked
 
-### requestAnimationFrame() method -> which sits on the window object of the browser but can be called directly. Pass the animation you want to create an endless animation
+- delta time -> the amount of milliseconds that passed between each call of requestAnimationFrame
+
+### requestAnimationFrame() method -> which sits on the window object of the browser but can be called directly. Pass the animation you want to create an endless animation ; will automatically try to adjust itself to the screen refresh rate, in most cases 60 frames/sec ; also automatically generate a timestamp
 
 ### Using Circle Packing Algorithm -> maximum number of circles that can fit inside an area without two of them overlapping : to avoid the overlapping of the obstacles
 

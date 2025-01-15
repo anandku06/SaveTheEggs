@@ -80,7 +80,7 @@ window.addEventListener("load", function () {
       else if (angle < 1.96) this.frameY = 4;
       else if (angle < 2.74) this.frameY = 5;
 
-      console.log(angle);
+      // console.log(angle);
 
       const distance = Math.hypot(this.dy, this.dx); // other method for the player movement ; speed here is constant as we are targeting the longest distance only
 
@@ -108,11 +108,10 @@ window.addEventListener("load", function () {
 
       // vertical boundaries4
 
-      if(this.collisionY < this.game.topMargin + this.collisionRadius){
-        this.collisionY = this.game.topMargin + this.collisionRadius
-      }
-      else if(this.collisionY > this.game.height - this.collisionRadius){
-        this.collisionY = this.game.height - this.collisionRadius
+      if (this.collisionY < this.game.topMargin + this.collisionRadius) {
+        this.collisionY = this.game.topMargin + this.collisionRadius;
+      } else if (this.collisionY > this.game.height - this.collisionRadius) {
+        this.collisionY = this.game.height - this.collisionRadius;
       }
 
       // collision with obstacles
@@ -189,6 +188,9 @@ window.addEventListener("load", function () {
       this.topMargin = 260;
       this.debug = true;
       this.player = new Player(this);
+      this.fps = 20;
+      this.timer = 0; // starts from 0 to a threshold value after which the next animation frame is called; reset back to zero
+      this.interval = 1000 / this.fps;
       this.obstacles = [];
       this.numberOfObstacles = 10;
       this.mouse = {
@@ -222,11 +224,17 @@ window.addEventListener("load", function () {
         if (e.key == "d") this.debug = !this.debug;
       });
     }
-    render(context) {
+    render(context, deltaTime) {
       // draw or update all objects
-      this.obstacles.forEach((obstacle) => obstacle.draw(context));
-      this.player.draw(context);
-      this.player.update();
+      if (this.timer > deltaTime) {
+        // animate next frame
+        context.clearRect(0, 0, this.width, this.height)
+        this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        this.player.draw(context);
+        this.player.update();
+        this.timer = 0;
+      }
+      this.timer += deltaTime;
     }
     checkCollsion(a, b) {
       const dx = a.collisionX - b.collisionX;
@@ -275,11 +283,15 @@ window.addEventListener("load", function () {
   game.init();
   console.log(game);
 
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // built-in method used to clear the shapes ; takes the starting coords and ending coords
-    game.render(ctx); // because this is to be called again and again
+  let lastTime = 0;
+  function animate(timeStamp) {
+    const deltaTime = timeStamp - lastTime; // difference between the timestamp from this animation loop and the timestamp from the previous animation loop
+    lastTime = timeStamp;
+    // console.log(deltaTime)
+    // ctx.clearRect(0, 0, canvas.width, canvas.height); // built-in method used to clear the shapes ; takes the starting coords and ending coords
+    game.render(ctx, deltaTime); // because this is to be called again and again
     requestAnimationFrame(animate);
   } // animations of the game required
 
-  animate();
+  animate(0);
 });
