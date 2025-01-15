@@ -98,6 +98,23 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 100;
 
+      // horizonntal boundaries
+
+      if (this.collisionX < this.collisionRadius) {
+        this.collisionX = this.collisionRadius;
+      } else if (this.collisionX > this.game.width - this.collisionRadius) {
+        this.collisionX = this.game.width - this.collisionRadius;
+      }
+
+      // vertical boundaries4
+
+      if(this.collisionY < this.game.topMargin + this.collisionRadius){
+        this.collisionY = this.game.topMargin + this.collisionRadius
+      }
+      else if(this.collisionY > this.game.height - this.collisionRadius){
+        this.collisionY = this.game.height - this.collisionRadius
+      }
+
       // collision with obstacles
       this.game.obstacles.forEach((obstacle) => {
         let [collision, distance, sumOfRadii, dx, dy] = this.game.checkCollsion(
@@ -239,7 +256,7 @@ window.addEventListener("load", function () {
             overlapped = true;
           }
         });
-        const margin = testObstacle.collisionRadius * 2;
+        const margin = testObstacle.collisionRadius * 3;
         if (
           !overlapped &&
           testObstacle.spriteX > 0 &&
