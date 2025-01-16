@@ -300,6 +300,12 @@ window.addEventListener("load", function () {
         context.clearRect(0, 0, this.width, this.height);
         // this.obstacles.forEach((obstacle) => obstacle.draw(context));
         this.gameObjects = [...this.eggs, ...this.obstacles, this.player] // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
+
+        // sort by vertical posi
+        this.gameObjects.sort((a, b) => {
+          return a.collisionY - b.collisionY
+        }) // as the vertical posi changes, the object automatically goes to back of the existing object
+
         this.gameObjects.forEach((object) => {
           object.draw(context);
           object.update();
