@@ -180,23 +180,38 @@ window.addEventListener("load", function () {
     }
   }
 
-  class Egg{
-    constructor(game){
-      this.game = game
-      this.collisionX = Math.random() * this.game.width
-      this.collisionY = Math.random() * this.game.height
-      this.collisionRadius = 40
-      this.image = document.getElementById('egg')
-      this.spriteWidth = 110
-      this.spriteHeight = 135
-      this.width = this.spriteWidth
-      this.height = this.spriteHeight
-      this.spriteX = this.collisionX + this.width * 0.5
-      this.spriteY = this.collisionY + this.height * 0.5
+  class Egg {
+    constructor(game) {
+      this.game = game;
+      this.collisionX = Math.random() * this.game.width;
+      this.collisionY = Math.random() * this.game.height;
+      this.collisionRadius = 40;
+      this.image = document.getElementById("egg");
+      this.spriteWidth = 110;
+      this.spriteHeight = 135;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX = this.collisionX + this.width * 0.5;
+      this.spriteY = this.collisionY + this.height * 0.5;
     }
 
-    draw(context){
-      context
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
     }
   }
 
@@ -212,7 +227,9 @@ window.addEventListener("load", function () {
       this.timer = 0; // starts from 0 to a threshold value after which the next animation frame is called; reset back to zero
       this.interval = 1000 / this.fps;
       this.obstacles = [];
+      this.eggs = []
       this.numberOfObstacles = 10;
+      this.maxEggs = 10
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -248,13 +265,16 @@ window.addEventListener("load", function () {
       // draw or update all objects
       if (this.timer > deltaTime) {
         // animate next frame
-        context.clearRect(0, 0, this.width, this.height)
+        context.clearRect(0, 0, this.width, this.height);
         this.obstacles.forEach((obstacle) => obstacle.draw(context));
         this.player.draw(context);
         this.player.update();
         this.timer = 0;
       }
       this.timer += deltaTime;
+    }
+    addEgg(){
+
     }
     checkCollsion(a, b) {
       const dx = a.collisionX - b.collisionX;
