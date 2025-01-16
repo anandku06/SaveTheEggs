@@ -178,23 +178,30 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
+
+    update(){
+
+    }
   }
 
   class Egg {
     constructor(game) {
       this.game = game;
       this.collisionRadius = 40;
-      this.margin = this.collisionRadius * 2 // space between the collision area and the edges of the game area
-      this.collisionX = this.margin + (Math.random() * (this.game.width - this.margin));
+      this.margin = this.collisionRadius * 2; // space between the collision area and the edges of the game area
+      this.collisionX =
+        this.margin + Math.random() * (this.game.width - this.margin);
       // this.collisionX = Math.random() * (this.game.width)
-      this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin - this.margin));
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin - this.margin);
       this.image = document.getElementById("egg");
       this.spriteWidth = 110;
       this.spriteHeight = 135;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      this.spriteX
-      this.spriteY
+      this.spriteX;
+      this.spriteY;
     }
 
     draw(context) {
@@ -216,21 +223,24 @@ window.addEventListener("load", function () {
       }
     }
 
-    update(){
+    update() {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      let collisionObject = [this.game.player, ...this.game.obstacles] // contains all the objects from which the eggs will collide 
+      let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the eggs will collide
       // '...' spread op -> used to quickly expand elements in an array into another array
 
-      collisionObject.forEach(object => {
-        let [collision, distance, sumOfRadii, dx, dy] = this.game.checkCollsion(this, object)
-        if(collision){
-          const unit_x = dx / distance
-          const unit_y = dy / distance
-          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x
-          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y
+      collisionObject.forEach((object) => {
+        let [collision, distance, sumOfRadii, dx, dy] = this.game.checkCollsion(
+          this,
+          object
+        );
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
-      })
+      });
     }
   }
 
@@ -245,12 +255,13 @@ window.addEventListener("load", function () {
       this.fps = 70;
       this.timer = 0; // starts from 0 to a threshold value after which the next animation frame is called; reset back to zero
       this.interval = 1000 / this.fps;
-      this.eggTimer = 0 // same logic as for FPS
-      this.eggInterval = 1000
+      this.eggTimer = 0; // same logic as for FPS
+      this.eggInterval = 1000;
       this.obstacles = [];
-      this.eggs = []
+      this.eggs = [];
+      this.gameObjects = [];
       this.numberOfObstacles = 10;
-      this.maxEggs = 10
+      this.maxEggs = 10;
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -287,29 +298,28 @@ window.addEventListener("load", function () {
       if (this.timer > deltaTime) {
         // animate next frame
         context.clearRect(0, 0, this.width, this.height);
-        this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        this.eggs.forEach((egg) => {
-          egg.draw(context)
-          egg.update()
+        // this.obstacles.forEach((obstacle) => obstacle.draw(context));
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player] // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
+        this.gameObjects.forEach((object) => {
+          object.draw(context);
+          object.update();
         });
-        this.player.draw(context);
-        this.player.update();
+        // this.player.draw(context);
+        // this.player.update();
         this.timer = 0;
       }
       this.timer += deltaTime;
 
       // add eggs periodically
-      if(this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs){
-        this.addEgg()
-        this.eggTimer = 0
+      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
+        this.addEgg();
+        this.eggTimer = 0;
+      } else {
+        this.eggTimer += deltaTime;
       }
-      else{
-        this.eggTimer += deltaTime
-      }
-
     }
-    addEgg(){
-      this.eggs.push(new Egg(this))
+    addEgg() {
+      this.eggs.push(new Egg(this));
     }
     checkCollsion(a, b) {
       const dx = a.collisionX - b.collisionX;
