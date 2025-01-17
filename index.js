@@ -244,6 +244,13 @@ window.addEventListener("load", function () {
     }
   }
 
+  class Enemy{
+    constructor(game){
+      this.game = game
+      
+    }
+  }
+
   class Game {
     constructor(canvas) {
       this.canvas = canvas;
