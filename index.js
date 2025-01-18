@@ -246,14 +246,14 @@ window.addEventListener("load", function () {
     constructor(game) {
       this.game = game;
       this.collisionRadius = 30;
-      this.collisionX = this.game.width;
-      this.collisionY = Math.random() * this.game.height;
       this.speedX = Math.random() * 3 + 0.5;
       this.image = document.getElementById("toad");
       this.spriteWidth = 140;
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
+      this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
+      this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
       this.spriteX;
       this.spriteY;
     }
@@ -275,8 +275,14 @@ window.addEventListener("load", function () {
         context.stroke();
       }
     }
-    update(){
-      this.collisionX -= this.speedX
+    update() {
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height + 40;
+      this.collisionX -= this.speedX;
+      if (this.spriteX + this.width < 0) {
+        this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
+        this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
+      }
     }
   }
 
@@ -296,6 +302,7 @@ window.addEventListener("load", function () {
       this.obstacles = [];
       this.eggs = [];
       this.gameObjects = [];
+      this.enemies = []
       this.numberOfObstacles = 10;
       this.maxEggs = 10;
       this.mouse = {
@@ -335,7 +342,7 @@ window.addEventListener("load", function () {
         // animate next frame
         context.clearRect(0, 0, this.width, this.height);
         // this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        this.gameObjects = [...this.eggs, ...this.obstacles, this.player]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player, ...this.enemies]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
 
         // sort by vertical posi
         this.gameObjects.sort((a, b) => {
@@ -360,8 +367,13 @@ window.addEventListener("load", function () {
         this.eggTimer += deltaTime;
       }
     }
+
     addEgg() {
       this.eggs.push(new Egg(this));
+    }
+
+    addEnemy(){
+      this.enemies.push(new Enemy(this))
     }
     checkCollsion(a, b) {
       const dx = a.collisionX - b.collisionX;
@@ -372,6 +384,10 @@ window.addEventListener("load", function () {
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
     init() {
+      for(let i = 0; i < 3; i++){
+        this.addEnemy()
+        // console.log(this.enemies);
+      }
       let attempts = 0;
       while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
         let testObstacle = new Obstacle(this);
