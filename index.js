@@ -224,7 +224,7 @@ window.addEventListener("load", function () {
     update() {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the eggs will collide
+      let collisionObject = [this.game.player, ...this.game.obstacles, ...this.game.enemies]; // contains all the objects from which the eggs will collide
       // '...' spread op -> used to quickly expand elements in an array into another array
 
       collisionObject.forEach((object) => {
@@ -283,7 +283,7 @@ window.addEventListener("load", function () {
         this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
         this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
       }
-      let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the eggs will collide
+      let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the enemies will collide with
       // '...' spread op -> used to quickly expand elements in an array into another array
 
       collisionObject.forEach((object) => {
