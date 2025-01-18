@@ -283,6 +283,21 @@ window.addEventListener("load", function () {
         this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
         this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
       }
+      let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the eggs will collide
+      // '...' spread op -> used to quickly expand elements in an array into another array
+
+      collisionObject.forEach((object) => {
+        let [collision, distance, sumOfRadii, dx, dy] = this.game.checkCollsion(
+          this,
+          object
+        );
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
     }
   }
 
