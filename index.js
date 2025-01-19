@@ -224,7 +224,11 @@ window.addEventListener("load", function () {
     update() {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height * 0.5 - 30;
-      let collisionObject = [this.game.player, ...this.game.obstacles, ...this.game.enemies]; // contains all the objects from which the eggs will collide
+      let collisionObject = [
+        this.game.player,
+        ...this.game.obstacles,
+        ...this.game.enemies,
+      ]; // contains all the objects from which the eggs will collide
       // '...' spread op -> used to quickly expand elements in an array into another array
 
       collisionObject.forEach((object) => {
@@ -242,12 +246,30 @@ window.addEventListener("load", function () {
     }
   }
 
-  class Larva{
-    constructor(game, x, y){
-      this.game = game
-      this.collisionX = x
-      this.collisionY = y
-      this.collisionRadius = 30
+  class Larva {
+    constructor(game, x, y) {
+      this.game = game;
+      this.collisionX = x;
+      this.collisionY = y;
+      this.collisionRadius = 30;
+      this.image = document.getElementById("larva");
+      this.spriteWidth = 150;
+      this.spriteHeight = 150;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX;
+      this.spriteY;
+      this.speedY = 1 + Math.random();
+    }
+
+    draw(context) {
+      context.drawImage(this.image, this.spriteX, this.spriteY);
+    }
+
+    update() {
+      this.collisionY -= this.speedY;
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5;
     }
   }
 
@@ -261,8 +283,11 @@ window.addEventListener("load", function () {
       this.spriteHeight = 260;
       this.width = this.spriteWidth;
       this.height = this.spriteHeight;
-      this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
-      this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
+      this.collisionX =
+        this.game.width + this.width + Math.random() * this.game.width * 0.5;
+      this.collisionY =
+        this.game.topMargin +
+        Math.random() * (this.game.height - this.game.topMargin);
       this.spriteX;
       this.spriteY;
     }
@@ -289,8 +314,11 @@ window.addEventListener("load", function () {
       this.spriteY = this.collisionY - this.height + 40;
       this.collisionX -= this.speedX;
       if (this.spriteX + this.width < 0) {
-        this.collisionX = this.game.width + this.width + Math.random() * this.game.width * 0.5;
-        this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
+        this.collisionX =
+          this.game.width + this.width + Math.random() * this.game.width * 0.5;
+        this.collisionY =
+          this.game.topMargin +
+          Math.random() * (this.game.height - this.game.topMargin);
       }
       let collisionObject = [this.game.player, ...this.game.obstacles]; // contains all the objects from which the enemies will collide with
       // '...' spread op -> used to quickly expand elements in an array into another array
@@ -326,7 +354,7 @@ window.addEventListener("load", function () {
       this.obstacles = [];
       this.eggs = [];
       this.gameObjects = [];
-      this.enemies = []
+      this.enemies = [];
       this.numberOfObstacles = 10;
       this.maxEggs = 10;
       this.mouse = {
@@ -366,7 +394,12 @@ window.addEventListener("load", function () {
         // animate next frame
         context.clearRect(0, 0, this.width, this.height);
         // this.obstacles.forEach((obstacle) => obstacle.draw(context));
-        this.gameObjects = [...this.eggs, ...this.obstacles, this.player, ...this.enemies]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
+        this.gameObjects = [
+          ...this.eggs,
+          ...this.obstacles,
+          this.player,
+          ...this.enemies,
+        ]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
 
         // sort by vertical posi
         this.gameObjects.sort((a, b) => {
@@ -396,8 +429,8 @@ window.addEventListener("load", function () {
       this.eggs.push(new Egg(this));
     }
 
-    addEnemy(){
-      this.enemies.push(new Enemy(this))
+    addEnemy() {
+      this.enemies.push(new Enemy(this));
     }
     checkCollsion(a, b) {
       const dx = a.collisionX - b.collisionX;
@@ -408,8 +441,8 @@ window.addEventListener("load", function () {
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
     }
     init() {
-      for(let i = 0; i < 3; i++){
-        this.addEnemy()
+      for (let i = 0; i < 3; i++) {
+        this.addEnemy();
         // console.log(this.enemies);
       }
       let attempts = 0;

@@ -20,6 +20,10 @@
   pointer-events: none; /* set pointer-events to none on overlay image to make sure it doesn't interfere with mouse events on canvas */
 }
 
-#obstacles, #egg, #bull, #toad {
+#obstacles,
+#egg,
+#bull,
+#toad,
+#larva {
   display: none;
 }
