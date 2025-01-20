@@ -7,8 +7,8 @@ window.addEventListener("load", function () {
   ctx.fillStyle = "white"; // hard-coated the color of the 'fill' method with white
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
-  ctx.font = '40px Helvetica'
-  ctx.textAlign = 'center'
+  ctx.font = "40px Helvetica";
+  ctx.textAlign = "center";
 
   class Player {
     constructor(game) {
@@ -203,9 +203,9 @@ window.addEventListener("load", function () {
       this.spriteX;
       this.spriteY;
       // egg hatching logic
-      this.hatchTimer = 0
-      this.hatchInterval = 3000
-      this.markedForDeletion = false
+      this.hatchTimer = 0;
+      this.hatchInterval = 3000;
+      this.markedForDeletion = false;
     }
 
     draw(context) {
@@ -224,8 +224,12 @@ window.addEventListener("load", function () {
         context.fill();
         context.restore();
         context.stroke();
-        const displayTimer = (this.hatchTimer * .001).toFixed(0)
-        context.fillText(displayTimer, this.collisionX, this.collisionY - this.collisionRadius * 2.5)
+        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
+        context.fillText(
+          displayTimer,
+          this.collisionX,
+          this.collisionY - this.collisionRadius * 2.5
+        );
       }
     }
 
@@ -253,12 +257,14 @@ window.addEventListener("load", function () {
         }
       });
       // hatching
-      if(this.hatchTimer > this.hatchInterval){
-        this.game.hatchlings.push(new Larva(this.game, this.collisionX, this.collisionY))
-        this.markedForDeletion = true
-        this.game.removeGameObjects()
-      }else{
-        this.hatchTimer += deltaTime
+      if (this.hatchTimer > this.hatchInterval) {
+        this.game.hatchlings.push(
+          new Larva(this.game, this.collisionX, this.collisionY)
+        );
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      } else {
+        this.hatchTimer += deltaTime;
       }
     }
   }
@@ -277,16 +283,65 @@ window.addEventListener("load", function () {
       this.spriteX;
       this.spriteY;
       this.speedY = 1 + Math.random();
+      this.frameX = 0
+      this.frameY = Math.floor(Math.random() * 2)
     }
 
     draw(context) {
-      context.drawImage(this.image, this.spriteX, this.spriteY);
+      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height);
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(
+          this.collisionX,
+          this.collisionY,
+          this.collisionRadius,
+          0,
+          Math.PI * 2
+        );
+        context.save();
+        context.globalAlpha = 0.5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
     }
 
     update() {
       this.collisionY -= this.speedY;
       this.spriteX = this.collisionX - this.width * 0.5;
-      this.spriteY = this.collisionY - this.height * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 50;
+      // move to safety
+      if (this.collisionY < this.game.topMargin) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+        this.game.score++
+      }
+
+      // collision with objects and hatchlings
+      let collisionObject = [
+        this.game.player,
+        ...this.game.obstacles
+      ];
+      collisionObject.forEach((object) => {
+        let [collision, distance, sumOfRadii, dx, dy] = this.game.checkCollsion(
+          this,
+          object
+        );
+        if (collision) {
+          const unit_x = dx / distance;
+          const unit_y = dy / distance;
+          this.collisionX = object.collisionX + (sumOfRadii + 1) * unit_x;
+          this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
+        }
+      });
+      // collision of enemies
+      this.game.enemies.forEach(enemy => {
+        if(this.game.checkCollsion(this, enemy)[0]){
+          this.markedForDeletion = true
+          this.game.removeGameObjects()
+          this.game.lostHatchlings++
+        }
+      })
     }
   }
 
@@ -372,7 +427,9 @@ window.addEventListener("load", function () {
       this.eggs = [];
       this.gameObjects = [];
       this.enemies = [];
-      this.hatchlings = []
+      this.hatchlings = [];
+      this.score = 0
+      this.lostHatchlings = 0
       this.numberOfObstacles = 10;
       this.maxEggs = 10;
       this.mouse = {
@@ -417,7 +474,7 @@ window.addEventListener("load", function () {
           ...this.obstacles,
           this.player,
           ...this.enemies,
-          ...this.hatchlings
+          ...this.hatchlings,
         ]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
 
         // sort by vertical posi
@@ -448,8 +505,11 @@ window.addEventListener("load", function () {
       this.eggs.push(new Egg(this));
     }
 
-    removeGameObjects(){
-      this.eggs = this.eggs.filter(object => !object.markedForDeletion)
+    removeGameObjects() {
+      this.eggs = this.eggs.filter((object) => !object.markedForDeletion);
+      this.hatchlings = this.hatchlings.filter(
+        (object) => !object.markedForDeletion
+      );
     }
     addEnemy() {
       this.enemies.push(new Enemy(this));
