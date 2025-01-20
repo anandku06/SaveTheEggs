@@ -254,6 +254,7 @@ window.addEventListener("load", function () {
       });
       // hatching
       if(this.hatchTimer > this.hatchInterval){
+        this.game.hatchlings.push(new Larva(this.game, this.collisionX, this.collisionY))
         this.markedForDeletion = true
         this.game.removeGameObjects()
       }else{
@@ -371,6 +372,7 @@ window.addEventListener("load", function () {
       this.eggs = [];
       this.gameObjects = [];
       this.enemies = [];
+      this.hatchlings = []
       this.numberOfObstacles = 10;
       this.maxEggs = 10;
       this.mouse = {
@@ -415,6 +417,7 @@ window.addEventListener("load", function () {
           ...this.obstacles,
           this.player,
           ...this.enemies,
+          ...this.hatchlings
         ]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
 
         // sort by vertical posi
