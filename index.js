@@ -204,7 +204,7 @@ window.addEventListener("load", function () {
       this.spriteY;
       // egg hatching logic
       this.hatchTimer = 0;
-      this.hatchInterval = 3000;
+      this.hatchInterval = 5000;
       this.markedForDeletion = false;
     }
 
@@ -257,7 +257,7 @@ window.addEventListener("load", function () {
         }
       });
       // hatching
-      if (this.hatchTimer > this.hatchInterval) {
+      if (this.hatchTimer > this.hatchInterval || this.collisionY < this.game.topMargin) {
         this.game.hatchlings.push(
           new Larva(this.game, this.collisionX, this.collisionY)
         );
@@ -354,7 +354,7 @@ window.addEventListener("load", function () {
           this.game.lostHatchlings++;
           for (let i = 0; i < 10; i++) {
             this.game.particles.push(
-              new FireFly(this.game, this.collisionX, this.collisionY, "blue")
+              new Spark(this.game, this.collisionX, this.collisionY, "blue")
             );
           }
         }
@@ -475,6 +475,11 @@ window.addEventListener("load", function () {
       this.angle += this.va * 0.5;
       this.collisionX -= Math.cos(this.angle) * this.speedX;
       this.collisionY -= Math.sin(this.angle) * this.speedY;
+      if(this.radius > 0.1) this.radius -= 0.05
+      if(this.radius < 0.2){
+        this.markedForDeletion = true
+        this.game.removeGameObjects()
+      }
     }
   }
 
