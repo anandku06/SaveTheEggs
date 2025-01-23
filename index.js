@@ -410,13 +410,32 @@ window.addEventListener("load", function () {
     }
   }
 
+  class Particle{
+    constructor(game, x, y, color){
+      this.game = game
+      this.collisionX = x
+      this.collisionY = y
+      this.color = color
+      this.radius = Math.floor(Math.random() * 10 + 5)
+      this.speedX = Math.random
+    }
+  }
+
+  class FireFly extends Particle{
+
+  }
+
+  class Spark extends Particle{
+
+  }
+
   class Game {
     constructor(canvas) {
       this.canvas = canvas;
       this.width = this.canvas.width;
       this.height = this.canvas.height;
       this.topMargin = 260;
-      this.debug = true;
+      this.debug = false;
       this.player = new Player(this);
       this.fps = 70;
       this.timer = 0; // starts from 0 to a threshold value after which the next animation frame is called; reset back to zero

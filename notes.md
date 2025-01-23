@@ -4,6 +4,7 @@
 - Objects in JS are so called reference datatypes i.e. refers to the space where the main class is stored.
 - sometimes the reference of 'this' keyword in regular functions may lost due to nested callbacks, to overcome this use Arrow functions
 - ES6 arrow functions is that they automatically inherit the reference to 'this' keyword from the parent scope.
+- Subclassing in JS : When a parent class has a child class that inherits all the properties of the parent class, is called the sub-class.
 
 # canvas HTMLElement
 
