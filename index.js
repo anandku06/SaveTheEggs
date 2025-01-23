@@ -325,7 +325,7 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
         this.game.score++;
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 10; i++) {
           this.game.particles.push(
             new FireFly(this.game, this.collisionX, this.collisionY, "yellow")
           );
@@ -352,6 +352,11 @@ window.addEventListener("load", function () {
           this.markedForDeletion = true;
           this.game.removeGameObjects();
           this.game.lostHatchlings++;
+          for (let i = 0; i < 10; i++) {
+            this.game.particles.push(
+              new FireFly(this.game, this.collisionX, this.collisionY, "blue")
+            );
+          }
         }
       });
     }
@@ -456,7 +461,7 @@ window.addEventListener("load", function () {
   class FireFly extends Particle {
     update() {
       this.angle += this.va;
-      this.collisionX += this.speedX;
+      this.collisionX += Math.cos(this.angle) * this.speedX;
       this.collisionY -= this.speedY;
       if (this.collisionY < 0 - this.radius) {
         this.markedForDeletion = true;
@@ -465,7 +470,13 @@ window.addEventListener("load", function () {
     }
   }
 
-  class Spark extends Particle {}
+  class Spark extends Particle {
+    update() {
+      this.angle += this.va * 0.5;
+      this.collisionX -= Math.cos(this.angle) * this.speedX;
+      this.collisionY -= Math.sin(this.angle) * this.speedY;
+    }
+  }
 
   class Game {
     constructor(canvas) {
