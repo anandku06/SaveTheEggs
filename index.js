@@ -6,7 +6,7 @@ window.addEventListener("load", function () {
   // these hard-coated values are executed here only once to minimise the frequent change of the color of the shape when multiple objects are made
   ctx.fillStyle = "white"; // hard-coated the color of the 'fill' method with white
   ctx.lineWidth = 3;
-  ctx.strokeStyle = "white";
+  ctx.strokeStyle = "black";
   ctx.font = "40px Helvetica";
   ctx.textAlign = "center";
 
@@ -325,6 +325,11 @@ window.addEventListener("load", function () {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
         this.game.score++;
+        for (let i = 0; i < 3; i++) {
+          this.game.particles.push(
+            new FireFly(this.game, this.collisionX, this.collisionY, "yellow")
+          );
+        }
       }
 
       // collision with objects and hatchlings
@@ -528,7 +533,7 @@ window.addEventListener("load", function () {
           this.player,
           ...this.enemies,
           ...this.hatchlings,
-          ...this.particles
+          ...this.particles,
         ]; // here the order matter bcz the draw method wil draw the objecst on top of each other as per the sequence
 
         // sort by vertical posi
