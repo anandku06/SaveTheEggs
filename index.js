@@ -327,7 +327,7 @@ window.addEventListener("load", function () {
       if (this.collisionY < this.game.topMargin) {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
-        this.game.score++;
+        if(!this.game.gameOver) this.game.score++;
         for (let i = 0; i < 10; i++) {
           this.game.particles.push(
             new FireFly(this.game, this.collisionX, this.collisionY, "yellow")
@@ -417,7 +417,7 @@ window.addEventListener("load", function () {
       this.spriteX = this.collisionX - this.width * 0.5;
       this.spriteY = this.collisionY - this.height + 40;
       this.collisionX -= this.speedX;
-      if (this.spriteX + this.width < 0) {
+      if (this.spriteX + this.width < 0 && !this.game.gameOver) {
         this.collisionX =
           this.game.width + this.width + Math.random() * this.game.width * 0.5;
         this.collisionY =
@@ -586,7 +586,7 @@ window.addEventListener("load", function () {
       this.timer += deltaTime;
 
       // add eggs periodically
-      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
+      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs && !this.gameOver) {
         this.addEgg();
         this.eggTimer = 0;
       } else {
