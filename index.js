@@ -34,6 +34,13 @@ window.addEventListener("load", function () {
       this.image = document.getElementById("bull");
     }
 
+    restart() {
+      this.collisionX = this.game.width * 0.5;
+      this.collisionY = this.game.height * 0.5;
+      this.spriteX = this.collisionX - this.width * 0.5;
+      this.spriteY = this.collisionY - this.height * 0.5 - 100;
+    }
+
     draw(context) {
       context.drawImage(
         this.image,
@@ -327,7 +334,7 @@ window.addEventListener("load", function () {
       if (this.collisionY < this.game.topMargin) {
         this.markedForDeletion = true;
         this.game.removeGameObjects();
-        if(!this.game.gameOver) this.game.score++;
+        if (!this.game.gameOver) this.game.score++;
         for (let i = 0; i < 10; i++) {
           this.game.particles.push(
             new FireFly(this.game, this.collisionX, this.collisionY, "yellow")
@@ -519,7 +526,7 @@ window.addEventListener("load", function () {
       this.hatchlings = [];
       this.particles = [];
       this.score = 0;
-      this.gameOver = false
+      this.gameOver = false;
       this.lostHatchlings = 0;
       this.numberOfObstacles = 10;
       this.maxEggs = 5;
@@ -528,7 +535,7 @@ window.addEventListener("load", function () {
         y: this.height * 0.5,
         pressed: false,
       };
-      this.winningScore = 5
+      this.winningScore = 5;
 
       this.canvas.addEventListener("mousedown", (e) => {
         this.mouse.x = e.offsetX;
@@ -553,6 +560,7 @@ window.addEventListener("load", function () {
       });
       window.addEventListener("keydown", (e) => {
         if (e.key == "d") this.debug = !this.debug;
+        else if (e.key == "r") this.restart();
       });
     }
     render(context, deltaTime) {
@@ -586,7 +594,11 @@ window.addEventListener("load", function () {
       this.timer += deltaTime;
 
       // add eggs periodically
-      if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs && !this.gameOver) {
+      if (
+        this.eggTimer > this.eggInterval &&
+        this.eggs.length < this.maxEggs &&
+        !this.gameOver
+      ) {
         this.addEgg();
         this.eggTimer = 0;
       } else {
@@ -603,33 +615,35 @@ window.addEventListener("load", function () {
       context.restore();
 
       // win or lose
-      if(this.score >= this.winningScore){
-        this.gameOver = true
-        context.save()
-        context.fillStyle = 'rgba(0, 0, 0, 0.5)'
-        context.fillRect(0, 0, this.width, this.height)
-        context.fillStyle = 'white'
-        context.textAlign = 'center'
-        context.shadowOffsetX = 4 // property of the canvas element, performance expensive ; not supported by most of the browsers
-        context.shadowOffsetY = 4
-        context.shadowColor = 'black'
-        let message1, message2
-        if(this.lostHatchlings <= 5){
-          message1 = "Good Job!!"
-          message2 = "You are a saviour!!"
+      if (this.score >= this.winningScore) {
+        this.gameOver = true;
+        context.save();
+        context.fillStyle = "rgba(0, 0, 0, 0.5)";
+        context.fillRect(0, 0, this.width, this.height);
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.shadowOffsetX = 4; // property of the canvas element, performance expensive ; not supported by most of the browsers
+        context.shadowOffsetY = 4;
+        context.shadowColor = "black";
+        let message1, message2;
+        if (this.lostHatchlings <= 5) {
+          message1 = "Good Job!!";
+          message2 = "You are a saviour!!";
+        } else {
+          message1 = "Oh No!!";
+          message2 = `You lost ${this.lostHatchlings} hatchlings, don't be a pushover!!`;
         }
-        else{
-          message1 = "Oh No!!"
-          message2 = `You lost ${this.lostHatchlings} hatchlings, don't be a pushover!!`
-        }
-        context.font = '130px Bangers'
-        context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20)
-        context.font = '40px Bangers'
-        context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30)
-        context.fillText(`Final Score: ${this.score}. Press 'R' to restart!!`, this.width * 0.5, this.height * 0.5 + 80)
-        context.restore()
+        context.font = "130px Bangers";
+        context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20);
+        context.font = "40px Bangers";
+        context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30);
+        context.fillText(
+          `Final Score: ${this.score}. Press 'R' to restart!!`,
+          this.width * 0.5,
+          this.height * 0.5 + 80
+        );
+        context.restore();
       }
-
     }
 
     addEgg() {
@@ -655,6 +669,24 @@ window.addEventListener("load", function () {
       const sumOfRadii = a.collisionRadius + b.collisionRadius;
 
       return [distance < sumOfRadii, distance, sumOfRadii, dx, dy];
+    }
+    restart() {
+      this.player.restart();
+      this.obstacles = [];
+      this.eggs = [];
+      this.gameObjects = [];
+      this.enemies = [];
+      this.hatchlings = [];
+      this.particles = [];
+      this.mouse = {
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
+      this.score = 0
+      this.lostHatchlings = 0
+      this.gameOver = false
+      this.init()
     }
     init() {
       for (let i = 0; i < 5; i++) {
