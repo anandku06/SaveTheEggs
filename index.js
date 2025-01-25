@@ -519,6 +519,7 @@ window.addEventListener("load", function () {
       this.hatchlings = [];
       this.particles = [];
       this.score = 0;
+      this.gameOver = false
       this.lostHatchlings = 0;
       this.numberOfObstacles = 10;
       this.maxEggs = 5;
@@ -527,6 +528,7 @@ window.addEventListener("load", function () {
         y: this.height * 0.5,
         pressed: false,
       };
+      this.winningScore = 5
 
       this.canvas.addEventListener("mousedown", (e) => {
         this.mouse.x = e.offsetX;
@@ -599,6 +601,32 @@ window.addEventListener("load", function () {
         context.fillText("Lost: " + this.lostHatchlings, 25, 100);
       }
       context.restore();
+
+      // win or lose
+      if(this.score >= this.winningScore){
+        this.gameOver = true
+        context.save()
+        context.fillStyle = 'rgba(0, 0, 0, 0.5)'
+        context.fillRect(0, 0, this.width, this.height)
+        context.fillStyle = 'white'
+        context.textAlign = 'center'
+        let message1, message2
+        if(this.lostHatchlings <= 5){
+          message1 = "Good Job!!"
+          message2 = "You are a saviour!!"
+        }
+        else{
+          message1 = "Oh No!!"
+          message2 = `You lost ${this.lostHatchlings} hatchlings, don't be a pushover!!`
+        }
+        context.font = '130px Helvetica'
+        context.fillText(message1, this.width * 0.5, this.height * 0.5 - 20)
+        context.font = '40px Helvetica'
+        context.fillText(message2, this.width * 0.5, this.height * 0.5 + 30)
+        context.fillText(`Final Score: ${this.score}. Press 'R' to restart!!`, this.width * 0.5, this.height * 0.5 + 80)
+        context.restore()
+      }
+
     }
 
     addEgg() {
