@@ -535,7 +535,7 @@ window.addEventListener("load", function () {
         y: this.height * 0.5,
         pressed: false,
       };
-      this.winningScore = 5;
+      this.winningScore = 30;
 
       this.canvas.addEventListener("mousedown", (e) => {
         this.mouse.x = e.offsetX;
