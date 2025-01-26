@@ -615,7 +615,7 @@ window.addEventListener("load", function () {
       context.restore();
 
       // win or lose
-      if (this.score >= this.winningScore) {
+      if (this.score >= this.winningScore || this.lostHatchlings >= 10) {
         this.gameOver = true;
         context.save();
         context.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -626,10 +626,10 @@ window.addEventListener("load", function () {
         context.shadowOffsetY = 4;
         context.shadowColor = "black";
         let message1, message2;
-        if (this.lostHatchlings <= 5) {
+        if (this.score >= this.winningScore) {
           message1 = "Good Job!!";
           message2 = "You are a saviour!!";
-        } else {
+        } else if (this.lostHatchlings >= 10) {
           message1 = "Oh No!!";
           message2 = `You lost ${this.lostHatchlings} hatchlings, don't be a pushover!!`;
         }
